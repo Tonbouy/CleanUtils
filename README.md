@@ -133,8 +133,10 @@ They can use classic Delegate & DataSource, but they also come with a PagedUITab
 Those protocols are the same as UIKit's respective, they just add two functions in the protocol
 
 ```swift
+public protocol PagedUI{Table/Collection}View: UI{Table/Collection}View {
 	func loadMore() // Called when a new page needs to be loaded
 	func refreshData() // Serves to reload the whole table/collectionView on pullToRefresh
+}
 ```
 
 NOTE: the `loadMore()` triggers on `dequeueReusableCell()` when the UI reaches the 5 last items of the table/collectionView. So when you instantiate your cells remember to register them in the tableView and dequeue them as reusable, otherwise pagination won't work.
@@ -146,6 +148,7 @@ See [Paged Example](#paged-example) for more information.
 # CleanViewModel
 
 This is the base viewModel class from which all viewModels should inherit.
+
 It contains simple but useful elements such as : 
 - Input/Output Management
 - DisposeBag (RxSwift)
@@ -162,50 +165,50 @@ Let's say you have a ProfileViewController, where you can add a user as friend, 
 
 ```swift
 enum ProfileInput {
-	case addUserTapped
+  case addUserTapped
 }
 
 enum ProfileOutput {
-	case userAdded
+  case userAdded
 }
 
 class ProfileViewModel: CleanViewModel<ProfileInput, ProfileOutput> {
 
-	let userState = DataState<User>.relay(remoteEnabled: true)
-	let addState = ActionState.relay(remoteEnabled: true)
-	let userInteractor: UserInteractor // Clean Architecture :)
+  let userState = DataState<User>.relay(remoteEnabled: true)
+  let addState = ActionState.relay(remoteEnabled: true)
+  let userInteractor: UserInteractor // Clean Architecture :)
 
-	var user: User? {
-		return userState.value.data as? User
-	}
+  var user: User? {
+    return userState.value.data as? User
+  }
 
-	override init() {
-		userInteractor = UserInteractor() // Clean Architecture :)
-		super.init()
+  override init() {
+    userInteractor = UserInteractor() // Clean Architecture :)
+    super.init()
 
-		// Load process works with loadRemote & loadLocal, applies to all kinds of State
-		// Here launched on init, but can also be triggered in the perform, doesn't matter
-		userInteractor
-			.fetchUser() // This is basically a RxSwift.Observable
-			.loadRemote(with: userState) // This loads data into the state
-			.disposed(by: self)
-	}
+    // Load process works with loadRemote & loadLocal, applies to all kinds of State
+    // Here launched on init, but can also be triggered in the perform, doesn't matter
+    userInteractor
+      .fetchUser() // This is basically a RxSwift.Observable
+      .loadRemote(with: userState) // This loads data into the state
+      .disposed(by: self)
+  }
 	
-	override func perform(_ input: ProfileInput) {
-		switch input {
-		case .addUserTapped:
-		// Load process with only success handled, works only for ActionState
-		// this one's disposal is handled in background
-		//
-		// You can also use the executeAction with only addState as parameter and handle both 	
-		// success and error by subscribing to addState in your ViewController.
-			userInteractor
-				.addUser() // Again, a RxSwift.Observable
-				.executeAction(with: addState, 
-							   viewModel: self, 
-							   success: .userAdded)
-		}
-	}
+  override func perform(_ input: ProfileInput) {
+    switch input {
+      case .addUserTapped:
+        // Load process with only success handled, works only for ActionState
+        // this one's disposal is handled in background
+        //
+        // You can also use the executeAction with only addState as parameter and handle both 	
+        // success and error by subscribing to addState in your ViewController.
+        userInteractor
+          .addUser() // Again, a RxSwift.Observable
+          .executeAction(with: addState, 
+                         viewModel: self, 
+                         success: .userAdded)
+    }
+  }
 }
 ```
 
@@ -213,42 +216,42 @@ Then, on the viewController's side, all you have to do to get the output back is
 
 ```swift
 class ProfileViewController: UIViewController {
-	@IBOutlet weak var addButton: UIButton!
+  @IBOutlet weak var addButton: UIButton!
 
-	let viewModel = ProfileViewModel()
-	var disposeBag = DisposeBag()
+  let viewModel = ProfileViewModel()
+  var disposeBag = DisposeBag()
 
-	override func viewDidLoad() {
-		super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-		viewModel
-			.userState
-			.subscribe(onNext: { [unowned self] state in
-				if state.isGlobalLoading {
-					return // Data is still loading
-				}
-				if let user = viewModel.user {
-					self.updateView(forUser: user) // Data was fetched and mapped successfully
-				} else {
-					// Could not fetch data
-				}
-			})
-			.disposed(by: self.disposeBag)
+	viewModel
+      .userState
+      .subscribe(onNext: { [unowned self] state in
+        if state.isGlobalLoading {
+          return // Data is still loading
+        }
+        if let user = viewModel.user {
+          self.updateView(forUser: user) // Data was fetched and mapped successfully
+        } else {
+          // Could not fetch data
+        }
+      })
+      .disposed(by: self.disposeBag)
 		
-		viewModel
-			.subscribe(onOutput: { output in
-				switch output {
-					case .userAdded:
-						print("User has been added successfully")
-				}
-			})
-			.disposed(by: self.disposeBag)
+    viewModel
+      .subscribe(onOutput: { output in
+        switch output {
+          case .userAdded:
+            print("User has been added successfully")
+          }
+      })
+      .disposed(by: self.disposeBag)
 
-		addButton
-			.rx.tap.mapTo(ProfileInput.addUserTapped)
-			.bind(to: self.viewModel)
-			.disposed(by: self.disposeBag)
-	}
+    addButton
+      .rx.tap.mapTo(ProfileInput.addUserTapped)
+      .bind(to: self.viewModel)
+      .disposed(by: self.disposeBag)
+  }
 }
 ```
 
@@ -261,8 +264,8 @@ Let's say you have a MessagesViewController, where you need to display a paged l
 
 ```swift
 enum MessagesInput {
-	case refreshData
-	case loadMore
+  case refreshData
+  case loadMore
 }
 
 enum MessagesOutput {
@@ -270,32 +273,32 @@ enum MessagesOutput {
 
 class MessagesViewModel: CleanViewModel<MessagesInput, MessagesOutput> {
 
-	let messagesInteractor: MessagesInteractor // Clean Architecture :)
-	lazy var pagedController = PagedCollectionController<Message> { [unowned self] page in
-		return self.messagesInteractor.getMessages(forPage: page)
-	}
+  let messagesInteractor: MessagesInteractor // Clean Architecture :)
+  lazy var pagedController = PagedCollectionController<Message> { [unowned self] page in
+    return self.messagesInteractor.getMessages(forPage: page)
+  }
 
-	var messagesState: BehaviorRelay<CollectionState<Message>> {
-		return pagedController.relay
-	}
+  var messagesState: BehaviorRelay<CollectionState<Message>> {
+    return pagedController.relay
+  }
 
-	var messages: [Message] {
-		return messagesState.value.data ?? []
-	}
+  var messages: [Message] {
+    return messagesState.value.data ?? []
+  }
 
-	override init() {
-		messagesInteractor = MessagesInteractor() // Clean Architecture :)
-		super.init()
-	}
+  override init() {
+    messagesInteractor = MessagesInteractor() // Clean Architecture :)
+    super.init()
+  }
 	
-	override func perform(_ input: ProfileInput) {
-		switch input {
-			case .loadMore:
-				pagedController.loadMore()
-			case .refreshData:
-				pagedController.refreshData()
-		}
+  override func perform(_ input: ProfileInput) {
+    switch input {
+      case .loadMore:
+        pagedController.loadMore()
+      case .refreshData:
+  	    pagedController.refreshData()
 	}
+  }
 }
 ```
 
@@ -303,42 +306,40 @@ Then, on the viewController's side :
 
 ```swift
 class MessagesViewController: UIViewController {
-	@IBOutlet weak var tableView: PagedUITableView!
+  @IBOutlet weak var tableView: PagedUITableView!
 
-	let viewModel = MessagesViewModel()
-	var disposeBag = DisposeBag()
+  let viewModel = MessagesViewModel()
+  var disposeBag = DisposeBag()
 
-	override func viewDidLoad() {
-		super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-		self.tableView.dataSource = self
+    self.tableView.dataSource = self
 
-		self.viewModel
-			.messagesState
-			.bindToPagedTableView(self.tableView)
-			.disposed(by: self.disposeBag)
+    self.viewModel
+      .messagesState
+	  .bindToPagedTableView(self.tableView)
+      .disposed(by: self.disposeBag)
 
-		self.viewModel.perform(.refreshData)
-	}
+    self.viewModel.perform(.refreshData)
+  }
 }
 
 extension ProfileViewController: PagedUITableViewDataSource {
-	// don't forget the required function to conform to UITableViewDataSource
-	// such as for example:
+  // don't forget the required function to conform to UITableViewDataSource
+  // such as for example:
+  func numberOfSections(in tableView: UITableView) {
+    return viewModel.messages
+  }
 
-	func numberOfSections(in tableView: UITableView) {
-		return viewModel.messages
-	}
+  // and add the two extras from PagedUITableViewDataSource
+  func loadMore() {
+    self.viewModel.perform(.loadMore)
+  }
 
-	// and add the two extras from PagedUITableViewDataSource
-
-	func loadMore() {
-		self.viewModel.perform(.loadMore)
-	}
-
-	func refreshData() {
-		self.viewModel.perform(.refreshData)
-	}
+  func refreshData() {
+    self.viewModel.perform(.refreshData)
+  }
 }
 ```
 
