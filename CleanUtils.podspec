@@ -7,11 +7,12 @@ Pod::Spec.new do |s|
 
     s.author           = { 'Tonbouy' => 'nicolas.ribeiroteixeira@gmail.com' }
 
-    s.source           = { :git => 'https://github.com/Tonbouy/CleanUtils.git', :tag => s.version.to_s }
+    s.source           = { :git => 'https://github.com/Tonbouy/CleanUtils.git', :tag => 'master' }
 
     s.source_files = 'CleanUtils/Classes/**/*'
 
     s.ios.deployment_target  = '10.0'
+    s.swift_version = "4.2"
 
     s.frameworks = 'UIKit', 'Foundation'
     s.dependency 'RxSwift'

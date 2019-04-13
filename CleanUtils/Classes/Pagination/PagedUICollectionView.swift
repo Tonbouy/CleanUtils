@@ -87,7 +87,7 @@ open class PagedUICollectionView: UICollectionView {
     }
 
     private func createActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = loadingColor
         return activityIndicator
