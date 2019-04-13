@@ -45,17 +45,3 @@ public class PagedCollectionController<Data>: PagedDataSource {
             .disposed(by: disposeBag)
     }
 }
-
-extension CollectionState {
-    public static func pagedRelay(data: [Data] = [],
-                                  request: () -> Observable<Paged<[Data]>>) -> BehaviorRelay<CollectionState<Data>> {
-        return BehaviorRelay<CollectionState<Data>>(value: CollectionState(data: data,
-                                                                           localEnabled: false,
-                                                                           localLoading: false,
-                                                                           remoteEnabled: true,
-                                                                           remoteLoading: true,
-                                                                           paginationEnabled: true,
-                                                                           paginationLoading: true)
-        )
-    }
-}
