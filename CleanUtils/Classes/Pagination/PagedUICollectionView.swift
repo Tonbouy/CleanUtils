@@ -116,7 +116,7 @@ open class PagedUICollectionView: UICollectionView {
 public extension Reactive where Base: PagedUICollectionView {
 
     /// Bindable sink for `loading` property.
-    public var isLoading: Binder<Bool> {
+    var isLoading: Binder<Bool> {
         return Binder(self.base) { element, value in
             element.setLoading(value)
         }

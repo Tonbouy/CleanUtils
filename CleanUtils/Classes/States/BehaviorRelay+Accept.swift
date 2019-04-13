@@ -12,11 +12,11 @@ import RxSwift
 
 public extension BehaviorRelay {
 
-    public func accept<T>(partial: PartialEvent<[T]>) where Element == CollectionState<T> {
+    func accept<T>(partial: PartialEvent<[T]>) where Element == CollectionState<T> {
         accept(value.reduce(partial: partial))
     }
 
-    public func accept<T>(partial: PartialEvent<T>) where Element == DataState<T> {
+    func accept<T>(partial: PartialEvent<T>) where Element == DataState<T> {
         accept(value.reduce(partial: partial))
     }
 }

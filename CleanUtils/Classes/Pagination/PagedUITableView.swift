@@ -120,7 +120,7 @@ open class PagedUITableView: UITableView {
 public extension Reactive where Base: PagedUITableView {
 
     /// Bindable sink for `loading` property.
-    public var isLoading: Binder<Bool> {
+    var isLoading: Binder<Bool> {
         return Binder(self.base) { element, value in
             element.setLoading(value)
         }

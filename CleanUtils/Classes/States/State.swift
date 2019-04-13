@@ -22,27 +22,27 @@ public protocol State: ViewState where P == PartialEvent<T> {
 
 public extension State {
     
-    public var isGlobalLoading: Bool {
+    var isGlobalLoading: Bool {
         return isDataEmpty && (remoteLoading || localLoading)
     }
     
-    public var isLoading: Bool {
+    var isLoading: Bool {
         return localLoading || remoteLoading || refreshLoading
     }
     
-    public var isDataEmpty: Bool {
+    var isDataEmpty: Bool {
         return isDataEmpty(data)
     }
     
-    public var isEmpty: Bool {
+    var isEmpty: Bool {
         return isDataEmpty && !isGlobalLoading
     }
     
-    public var hintError: Error? {
+    var hintError: Error? {
         return isDataEmpty ? nil : error
     }
     
-    public var globalError: Error? {
+    var globalError: Error? {
         if !isDataEmpty {
             return nil
         } else if isLoading {

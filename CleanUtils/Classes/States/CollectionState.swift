@@ -227,7 +227,7 @@ public struct CollectionState<Data> : State {
 
 public extension CollectionState {
 
-    public func canLoadMore() -> Bool {
+    func canLoadMore() -> Bool {
         if isLoading {
             return false
         }

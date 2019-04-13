@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'CleanUtils'
-    s.version          = '0.1.0'
+    s.version          = '1.0.0'
     s.summary          = 'Swift toolkit to help building simple and clean viewModels with states handling using RxSwift'
     s.homepage         = 'https://github.com/Tonbouy/CleanUtils'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.source_files = 'CleanUtils/Classes/**/*'
 
     s.ios.deployment_target  = '10.0'
-    s.swift_version = "4.2"
+    s.swift_version = "5.0"
 
     s.frameworks = 'UIKit', 'Foundation'
     s.dependency 'RxSwift'

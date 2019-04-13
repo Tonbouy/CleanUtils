@@ -11,7 +11,7 @@ import RxCocoa
 
 public extension Observable {
     
-    public func load<State, PartialState>(with relay: BehaviorRelay<State>,
+    func load<State, PartialState>(with relay: BehaviorRelay<State>,
                                           converter: @escaping ((LoadEvent<Element>) -> PartialState),
                                           onPartial: ((PartialState) -> Void)? = nil) -> Disposable where State: ViewState, PartialState == State.P {
         return self
