@@ -49,19 +49,4 @@ public extension ObservableType where E: State {
             tableView.reloadData()
         })
     }
-
-    func bind<T>(to tableView: UITableView) -> Disposable where E == CollectionState<T> {
-        switch tableView {
-        case let tableView as PagedUITableView:
-            return self.do(onNext: { state in
-                tableView.setLoading(state.isGlobalLoading)
-            }).subscribe(onNext: { _ in
-                tableView.reloadData()
-            })
-        default:
-            return subscribe(onNext: { _ in
-                tableView.reloadData()
-            })
-        }
-    }
 }
