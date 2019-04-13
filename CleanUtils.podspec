@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
 
     s.author           = { 'Tonbouy' => 'nicolas.ribeiroteixeira@gmail.com' }
 
-    s.source           = { :git => 'https://github.com/Tonbouy/CleanUtils.git', :tag => 'master' }
+    s.source           = { :git => 'https://github.com/Tonbouy/CleanUtils.git', :tag => "v#{s.version.to_s}" }
 
     s.source_files = 'CleanUtils/Classes/**/*'
 
