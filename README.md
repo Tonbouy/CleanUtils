@@ -133,9 +133,10 @@ They can use classic Delegate & DataSource, but they also come with a PagedUITab
 Those protocols are the same as UIKit's respective, they just add two functions in the protocol
 
 ```swift
-public protocol PagedUI{Table/Collection}View: UI{Table/Collection}View {
-	func loadMore() // Called when a new page needs to be loaded
-	func refreshData() // Serves to reload the whole table/collectionView on pullToRefresh
+public protocol PagedUITableView: UITableView {
+  func loadMore() // Called when a new page needs to be loaded
+
+  func refreshData() // Used to reload the whole tableView on pullToRefresh
 }
 ```
 
@@ -174,9 +175,10 @@ enum ProfileOutput {
 
 class ProfileViewModel: CleanViewModel<ProfileInput, ProfileOutput> {
 
+  let userInteractor: UserInteractor // Clean Architecture :)
+
   let userState = DataState<User>.relay(remoteEnabled: true)
   let addState = ActionState.relay(remoteEnabled: true)
-  let userInteractor: UserInteractor // Clean Architecture :)
 
   var user: User? {
     return userState.value.data as? User
@@ -224,7 +226,7 @@ class ProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-	viewModel
+    viewModel
       .userState
       .subscribe(onNext: { [unowned self] state in
         if state.isGlobalLoading {
@@ -274,6 +276,7 @@ enum MessagesOutput {
 class MessagesViewModel: CleanViewModel<MessagesInput, MessagesOutput> {
 
   let messagesInteractor: MessagesInteractor // Clean Architecture :)
+
   lazy var pagedController = PagedCollectionController<Message> { [unowned self] page in
     return self.messagesInteractor.getMessages(forPage: page)
   }
@@ -296,8 +299,8 @@ class MessagesViewModel: CleanViewModel<MessagesInput, MessagesOutput> {
       case .loadMore:
         pagedController.loadMore()
       case .refreshData:
-  	    pagedController.refreshData()
-	}
+        pagedController.refreshData()
+    }
   }
 }
 ```
@@ -318,7 +321,7 @@ class MessagesViewController: UIViewController {
 
     self.viewModel
       .messagesState
-	  .bindToPagedTableView(self.tableView)
+      .bindToPagedTableView(self.tableView)
       .disposed(by: self.disposeBag)
 
     self.viewModel.perform(.refreshData)
