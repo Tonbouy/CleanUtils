@@ -1,0 +1,32 @@
+PODS:
+  - CleanUtils (0.1.0):
+    - RxCocoa
+    - RxSwift
+  - RxAtomic (4.4.0)
+  - RxCocoa (4.4.0):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.4.0):
+    - RxAtomic (~> 4.4)
+
+DEPENDENCIES:
+  - CleanUtils (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - RxAtomic
+    - RxCocoa
+    - RxSwift
+
+EXTERNAL SOURCES:
+  CleanUtils:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CleanUtils: 06ed6fb23685493eed45178576704431f5b42c3b
+  RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
+  RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
+  RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
+
+PODFILE CHECKSUM: fa18bf5240639c2ddb43b937a57db1386467ea63
+
+COCOAPODS: 1.6.0.beta.1

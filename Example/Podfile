@@ -1,0 +1,11 @@
+platform :ios, '10.0'
+
+use_frameworks!
+
+target 'CleanUtilsExample' do
+  pod 'CleanUtils', :path => '../'
+end
+
+target 'CleanUtils_Tests' do
+  pod 'CleanUtils', :path => '../'
+end

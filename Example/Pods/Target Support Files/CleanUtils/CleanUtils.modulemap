@@ -1,0 +1,6 @@
+framework module CleanUtils {
+  umbrella header "CleanUtils-umbrella.h"
+
+  export *
+  module * { export * }
+}
