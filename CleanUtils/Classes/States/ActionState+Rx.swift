@@ -11,7 +11,7 @@ import RxCocoa
 
 public extension Observable {
 
-    public func executeAction(with relay: BehaviorRelay<ActionState>,
+    func executeAction(with relay: BehaviorRelay<ActionState>,
                               onPartial: ((ActionState.Partial) -> Void)? = nil) -> Disposable {
         return load(with: relay, converter: { event -> ActionState.Partial in
             switch event {
@@ -25,7 +25,7 @@ public extension Observable {
         }, onPartial: onPartial)
     }
     
-    public func executeAction<I, O>(with relay: BehaviorRelay<ActionState>,
+    func executeAction<I, O>(with relay: BehaviorRelay<ActionState>,
                                     viewModel: CleanViewModel<I, O>,
                                     success: O,
                                     error: O? = nil,
@@ -52,11 +52,11 @@ public extension Observable {
 
 public extension ActionState {
     
-    public static var relay: BehaviorRelay<ActionState> {
+    static var relay: BehaviorRelay<ActionState> {
         return BehaviorRelay<ActionState>(value: ActionState.initialState)
     }
     
-    public static func relay(with initialValue: ActionState) -> BehaviorRelay<ActionState> {
+    static func relay(with initialValue: ActionState) -> BehaviorRelay<ActionState> {
         return BehaviorRelay<ActionState>(value: initialValue)
     }
 }

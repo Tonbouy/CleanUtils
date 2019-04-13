@@ -38,7 +38,7 @@ open class CleanViewModel<ActionInput, Output> {
 public extension Disposable {
 
     @discardableResult
-    public func disposed<ActionInput, Output>(by vm: CleanViewModel<ActionInput, Output>) -> Disposable {
+    func disposed<ActionInput, Output>(by vm: CleanViewModel<ActionInput, Output>) -> Disposable {
         disposed(by: vm.disposeBag)
         return self
     }
@@ -46,7 +46,7 @@ public extension Disposable {
 
 public extension Observable {
 
-    public func bind<Output>(to viewModel: CleanViewModel<Element, Output>) -> Disposable {
+    func bind<Output>(to viewModel: CleanViewModel<Element, Output>) -> Disposable {
         return subscribe(onNext: { input in
             viewModel.perform(input)
         })

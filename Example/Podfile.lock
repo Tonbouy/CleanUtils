@@ -1,5 +1,5 @@
 PODS:
-  - CleanUtils (0.1.0):
+  - CleanUtils (1.0.0):
     - RxCocoa
     - RxSwift
   - RxAtomic (4.4.0)
@@ -22,11 +22,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CleanUtils: 06ed6fb23685493eed45178576704431f5b42c3b
+  CleanUtils: 0487ab7211787e47f46840f4f4eb5c72ae934b3a
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
   RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
 
 PODFILE CHECKSUM: fa18bf5240639c2ddb43b937a57db1386467ea63
 
-COCOAPODS: 1.6.0.beta.1
+COCOAPODS: 1.7.0.beta.3

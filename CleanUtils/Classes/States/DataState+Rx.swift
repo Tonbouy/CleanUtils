@@ -11,7 +11,7 @@ import RxCocoa
 
 public extension Observable {
     
-    public func loadRemote(with relay: BehaviorRelay<DataState<Element>>,
+    func loadRemote(with relay: BehaviorRelay<DataState<Element>>,
                            onPartial: ((PartialEvent<Element>) -> Void)? = nil) -> Disposable {
         return load(with: relay, converter: { event -> PartialEvent<Element> in
             switch event {
@@ -25,7 +25,7 @@ public extension Observable {
         }, onPartial: onPartial)
     }
     
-    public func loadLocal(with relay: BehaviorRelay<DataState<Element>>,
+    func loadLocal(with relay: BehaviorRelay<DataState<Element>>,
                           onPartial: ((PartialEvent<Element>) -> Void)? = nil) -> Disposable {
         return load(with: relay, converter: { event -> PartialEvent<Element> in
             switch event {
@@ -42,15 +42,15 @@ public extension Observable {
 
 public extension DataState {
     
-    public static var relay: BehaviorRelay<DataState<Data>> {
+    static var relay: BehaviorRelay<DataState<Data>> {
         return BehaviorRelay<DataState<Data>>(value: DataState.initialState)
     }
     
-    public static func relay(with initialValue: DataState<Data>) -> BehaviorRelay<DataState<Data>> {
+    static func relay(with initialValue: DataState<Data>) -> BehaviorRelay<DataState<Data>> {
         return BehaviorRelay<DataState<Data>>(value: initialValue)
     }
     
-    public static func relay(initialData: Data? = nil,
+    static func relay(initialData: Data? = nil,
                              localEnabled: Bool = false,
                              remoteEnabled: Bool = false) -> BehaviorRelay<DataState<Data>> {
         return BehaviorRelay<DataState<Data>>(value: DataState(data: initialData,
